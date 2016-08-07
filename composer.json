@@ -1,0 +1,30 @@
+{
+  "name": "ctech/configurator",
+  "description": "ConfigureTech, Inc Configurator Module",
+  "version": "0.0.1",
+  "type": "magento2-module",
+  "license": [
+    "MIT"
+  ],
+  "authors": [
+    {
+      "email": "tawfekov@gmail.com",
+      "name": "Tawfek Daghistani"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "~5.6.0|~7.*",
+    "magento/framework": "100.1.*",
+    "magento/module-catalog": "101.0.*",
+    "magento/module-checkout": "101.0.*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Ctech\\Configurator\\": ""
+    }
+  }
+}
