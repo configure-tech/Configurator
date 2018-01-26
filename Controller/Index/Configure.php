@@ -57,14 +57,14 @@ class Configure extends Action
             $session        = $this->_objectManager->get('Magento\Customer\Model\Session');
             $cart           = $this->cart;
 
-            $request        = $this->getRequest();
-            $params         = $request->getParams();
-            $products       = $params["description"];
-            $wholesale      = $params["wholesale"];
-            $retail         = $params["retail"];
-            $part_number    = $params["part_number"];
-            $lloyd_code     = $params["lloyd_code"];
-            $weight         = $params["weight"];
+            $request                  = $this->getRequest();
+            $params                   = $request->getParams();
+            $products                 = $params["description"];
+            $wholesale                = $params["wholesale"];
+            $retail                   = $params["retail"];
+            $part_number              = $params["part_number"];
+            $manufacturer_part_number = $params["manufacturer_part_number"];
+            $weight                   = $params["weight"];
 
             $product        = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($params["product_id"]);
             $configuretech_purchase_sku = $product->getData("configuretech_purchase_product");
@@ -90,7 +90,7 @@ class Configure extends Action
                 $formatted_products[$i]["wholesale"]        = $wholesale[$key];
                 $formatted_products[$i]["retail"]           = $retail[$key];
                 $formatted_products[$i]["part_number"]      = $part_number[$key];
-                $formatted_products[$i]["lloyd_code"]       = $lloyd_code[$key];
+                $formatted_products[$i]["manufacturer_part_number"]  = $manufacturer_part_number[$key];
                 $formatted_products[$i]["weight"]           = $weight[$key];
                 $formatted_products[$i]["total"]            = $retail[$key];
                 $i++;
