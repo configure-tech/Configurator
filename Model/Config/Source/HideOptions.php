@@ -19,7 +19,8 @@ namespace Ctech\Configurator\Model\Config\Source;
  */
 class HideOptions implements \Magento\Framework\Data\OptionSourceInterface
 {
-    const OPTIONS =  ["Manufacturer Part Number", "Part Number" , "Total" , "Description"];
+    const OPTIONS =  ["Mfr Part Number", "Part Number" , "Total" , "Description"];
+    //const OPTIONS =  ["Lloyd Code", "Part Number" , "Total" , "Description"];
 
     /**
      * creates an array of product options that admin can hide in frontend

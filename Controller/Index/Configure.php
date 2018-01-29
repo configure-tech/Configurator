@@ -63,15 +63,17 @@ class Configure extends Action
             $wholesale                = $params["wholesale"];
             $retail                   = $params["retail"];
             $part_number              = $params["part_number"];
-            $manufacturer_part_number = $params["manufacturer_part_number"];
+            $mfr_part_number          = $params["mfr_part_number"];
+            //$mfr_part_number        = $params["lloyd_code"];
             $weight                   = $params["weight"];
+            $product_id               = $params["product_id"];
 
-            $product        = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($params["product_id"]);
+            $product                  = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($product_id);
             $configuretech_purchase_sku = $product->getData("configuretech_purchase_product");
             if ($configuretech_purchase_sku) {
                 $product = $product->reset()->load($product->getIdBySku($configuretech_purchase_sku));
             } else {
-                $logger->addError($product->getId() . " has a missing attributes");
+                $logger->addError($product->getId() . " has a missing attributes [configuretech_purchase_product]");
                 throw new \Magento\Framework\Exception\NotFoundException(new Phrase("System Error - this product has missing attributes , please contact support"));
             }
 
@@ -86,13 +88,14 @@ class Configure extends Action
             $i = 0;
             foreach ($products as $key => $p)
             {
-                $formatted_products[$i]["description"]      = $p;
-                $formatted_products[$i]["wholesale"]        = $wholesale[$key];
-                $formatted_products[$i]["retail"]           = $retail[$key];
-                $formatted_products[$i]["part_number"]      = $part_number[$key];
-                $formatted_products[$i]["manufacturer_part_number"]  = $manufacturer_part_number[$key];
-                $formatted_products[$i]["weight"]           = $weight[$key];
-                $formatted_products[$i]["total"]            = $retail[$key];
+                $formatted_products[$i]["description"]               = $p;
+                $formatted_products[$i]["wholesale"]                 = $wholesale[$key];
+                $formatted_products[$i]["retail"]                    = $retail[$key];
+                $formatted_products[$i]["part_number"]               = $part_number[$key];
+                $formatted_products[$i]["mfr_part_number"]           = $mfr_part_number[$key];
+                //$formatted_products[$i]["lloyd_code"]              = $lloyd_code[$key];
+                $formatted_products[$i]["weight"]                    = $weight[$key];
+                $formatted_products[$i]["total"]                     = $retail[$key];
                 $i++;
             }
 

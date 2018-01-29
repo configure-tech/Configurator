@@ -23,8 +23,4 @@ in case you was in production mode , run this command
 
 ## Configuration
 
-In your magento admin, go to Stores->Configuration->Sales->Payment Methods
-
-"Hosted Settings" refers to credentials for both Bank and Card payments.
-
-For invoice and payment plan, make sure your Svea account's country the allowed country in Magento.
+In your magento admin, go to Stores->Configuration->Catalog->Ctech Configurator , you can enter your API key field 
