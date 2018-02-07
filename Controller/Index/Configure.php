@@ -19,6 +19,7 @@ use \Magento\Framework\View\Result\PageFactory;
 use \Magento\Framework\App\Action\Context;
 use \Magento\Framework\Phrase;
 use \Magento\Framework\App\Action\Action;
+use \Magento\Catalog\Model\Product\Attribute\Source\Status;
 
 /**
  * Class Configure
@@ -77,9 +78,9 @@ class Configure extends Action
                 throw new \Magento\Framework\Exception\NotFoundException(new Phrase("System Error - this product has missing attributes , please contact support"));
             }
 
-            if (is_null($product)) {
+            if (is_null($product) || ( $product->getStatus() == Status::STATUS_DISABLED )) {
                 $this->messageManager->addErrorMessage(
-                    $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml("We're unable to add this product to your cart. Please try again later.")
+                    $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml("We're unable to add this product to your cart, it might be disabled ,  Please try again later or contact support.")
                 );
                 return $this->_redirect($this->_redirect->getRefererUrl());
             }
@@ -115,6 +116,7 @@ class Configure extends Action
                         $product_params['options'][$option_id] = preg_replace('#<br\s*/?>#i', "\n", urldecode($selected_product[$option_title]));
                     }
                 }
+
                 $cart->addProduct($product, $product_params);
                 $product_params = [];
             }
