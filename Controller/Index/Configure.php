@@ -67,7 +67,6 @@ class Configure extends Action
             $mfr_part_number          = $params["mfr_part_number"];
             $weight                   = $params["weight"];
             $product_id               = $params["product_id"];
-            // re-add timestamp for Lloyd Mats Store
             $timestamp                = $params["timestamp"];
 
             $product                  = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($product_id);
@@ -97,7 +96,6 @@ class Configure extends Action
                 $formatted_products[$i]["mfr_part_number"]           = $mfr_part_number[$key];
                 $formatted_products[$i]["weight"]                    = $weight[$key];
                 $formatted_products[$i]["total"]                     = $retail[$key];
-                // re-add timestamp for Lloyd Mats Store
                 $formatted_products[$i]["timestamp"]                 = $timestamp;
                 $i++;
             }
