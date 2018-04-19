@@ -65,9 +65,10 @@ class Configure extends Action
             $retail                   = $params["retail"];
             $part_number              = $params["part_number"];
             $mfr_part_number          = $params["mfr_part_number"];
-            //$mfr_part_number        = $params["lloyd_code"];
             $weight                   = $params["weight"];
             $product_id               = $params["product_id"];
+            // re-add timestamp for Lloyd Mats Store , its optional
+            $timestamp                = isset($params["timestamp"]) ? $params["timestamp"] : "";
 
             $product                  = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($product_id);
             $configuretech_purchase_sku = $product->getData("configuretech_purchase_product");
@@ -94,9 +95,10 @@ class Configure extends Action
                 $formatted_products[$i]["retail"]                    = $retail[$key];
                 $formatted_products[$i]["part_number"]               = $part_number[$key];
                 $formatted_products[$i]["mfr_part_number"]           = $mfr_part_number[$key];
-                //$formatted_products[$i]["lloyd_code"]              = $lloyd_code[$key];
                 $formatted_products[$i]["weight"]                    = $weight[$key];
                 $formatted_products[$i]["total"]                     = $retail[$key];
+                // re-add timestamp for Lloyd Mats Store
+                $formatted_products[$i]["timestamp"]                 = $timestamp;
                 $i++;
             }
 
