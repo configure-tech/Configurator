@@ -19,6 +19,7 @@ namespace Ctech\Configurator\Model\Config\Source;
  */
 class HideOptions implements \Magento\Framework\Data\OptionSourceInterface
 {
+    // re-add timestamp for Lloyd Mats Store
     const OPTIONS =  ["Mfr Part Number", "Part Number" , "Total" , "Description", "Timestamp"];
 
     /**
