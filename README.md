@@ -3,12 +3,12 @@
 Configurator enables merchant on Magento 2 to integrate with ConfigureTech API in minutes.
 
 ## Dependencies
-
+it works with Magento2.2 or less 
 
 ## Installation
 
 
-```composer require ctech/configurator```
+```composer require ctech/configurator:2.2```
 
 Run upgrade scripts
 ```php bin/magento module:enable Ctech_Configurator```

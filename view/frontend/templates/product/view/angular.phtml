@@ -13,6 +13,7 @@
         ?>
         <?php if ($brand_code && $product_line_code && $apiKey) : ?>
             <div id="configurator">
+                <?php echo $block->getBlockHtml('formkey');?>
                 <div class="clearfix mar-t20 text-center" id="showLoader" align="center">
                     <img src="//ctiapi.com/images/ajax-loader.gif" alt="<?php echo __("Loading"); ?>">
                 </div>
