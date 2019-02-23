@@ -20,12 +20,14 @@ use \Magento\Framework\App\Action\Context;
 use \Magento\Framework\Phrase;
 use \Magento\Framework\App\Action\Action;
 use \Magento\Catalog\Model\Product\Attribute\Source\Status;
-
+use \Magento\Framework\App\CsrfAwareActionInterface;
+use \Magento\Framework\App\RequestInterface;
+use \Magento\Framework\App\Request\InvalidRequestException;
 /**
  * Class Configure
  * @package Ctech\Configurator\Controller\Index
  */
-class Configure extends Action
+class Configure extends Action implements CsrfAwareActionInterface
 {
 
     protected $resultPageFactory;
@@ -44,6 +46,31 @@ class Configure extends Action
         $this->resultPageFactory = $resultPageFactory;
         $this->cart = $cart;
         parent::__construct($context);
+    }
+
+    /**
+     * 
+     * Create exception in case CSRF validation failed.
+     * Return null if default exception will suffice.
+     *
+     * @param RequestInterface $request
+     * @return InvalidRequestException|null
+     */
+    public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    /**
+     * Perform custom request validation.
+     * Return null if default validation is needed.
+     *
+     * @param RequestInterface $request
+     * @return bool|null
+     */
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
     }
 
     /**
