@@ -21,16 +21,35 @@ namespace Ctech\Configurator\Plugin\Magento\Quote\Model;
 class Quote
 {
     /**
+     * @var \Ctech\Configurator\Helper\Data
+     */
+    protected $ctechHelper;
+
+    /**
+     * Quote constructor.
+     * @param \Ctech\Configurator\Helper\Data $ctechHelper
+     */
+    public function __construct(
+        \Ctech\Configurator\Helper\Data $ctechHelper
+    ) {
+        $this->ctechHelper = $ctechHelper;
+    }
+
+    /**
      * This allows you to add same product with different custom options to the cart
      * whereas otherwise Magento would normally just +1 the quantity of the product.
      *
-     * @todo : refactor later to be work only on Ctech Products
      * @param \Magento\Quote\Model\Quote $quote
      * @param \Closure $proceed
+     * @param   \Magento\Catalog\Model\Product $product
      * @return bool
      */
-    public function aroundGetItemByProduct(\Magento\Quote\Model\Quote $quote, \Closure $proceed)
+    public function aroundGetItemByProduct(\Magento\Quote\Model\Quote $quote, \Closure $proceed, $product)
     {
-        return false;
+        if ($this->ctechHelper->isCtechProduct($product)) {
+            return false;
+        }
+
+        return $proceed($product);
     }
 }
