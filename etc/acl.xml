@@ -1,14 +1,20 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Magento_Backend::stores">
-                    <resource id="Magento_Backend::stores_settings">
-                        <resource id="Magento_Config::config">
-                            <resource id="Ctech_Configurator::config" title="Ctech Configurator" sortOrder="50"/>
-                        </resource>
+                <resource id="Ctech_Configurator::Product" sortOrder="10" title="Product">
+                    <resource id="Ctech_Configurator::Product_save" sortOrder="10" title="Save Product" />
+                    <resource id="Ctech_Configurator::Product_delete" sortOrder="20" title="Delete Product" />
+                    <resource id="Ctech_Configurator::Product_update" sortOrder="30" title="Update Product" />
+                    <resource id="Ctech_Configurator::Product_view" sortOrder="40" title="View Product" />
+                </resource>
+            </resource>
+            <resource id="Magento_Backend::stores2" title="Store">
+                <resource id="Magento_Backend::stores_settings2" title="store_setting">
+                    <resource id="Magento_Config::config2" title="store_config">
+                        <resource id="Ctech_Configurator::config" title="Ctech Configurator" sortOrder="50" />
                     </resource>
                 </resource>
             </resource>

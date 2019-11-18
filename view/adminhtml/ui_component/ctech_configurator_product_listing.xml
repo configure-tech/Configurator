@@ -1,0 +1,133 @@
+<?xml version="1.0" ?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">
+				ctech_configurator_product_listing.ctech_configurator_product_listing_data_source</item>
+		</item>
+	</argument>
+	<settings>
+		<spinner>ctech_configurator_product_columns</spinner>
+		<deps>
+			<dep>ctech_configurator_product_listing.ctech_configurator_product_listing_data_source</dep>
+		</deps>
+		<!--buttons>
+			<button name="add">
+				<url path="*/*/new"/>
+				<class>primary</class>
+				<label translate="true">Add new Product</label>
+			</button>
+		</buttons-->
+	</settings>
+	<dataSource component="Magento_Ui/js/grid/provider" name="ctech_configurator_product_listing_data_source">
+		<settings>
+			<updateUrl path="mui/index/render" />
+		</settings>
+		<aclResource>Ctech_Configurator::Product</aclResource>
+		<dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+			name="ctech_configurator_product_listing_data_source">
+			<settings>
+				<requestFieldName>id</requestFieldName>
+				<primaryFieldName>product_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource>
+	<listingToolbar name="listing_top">
+		<settings>
+			<sticky>true</sticky>
+		</settings>
+		<bookmark name="bookmarks" />
+		<columnsControls name="columns_controls" />
+		<filters name="listing_filters" />
+		<paging name="listing_paging" />
+	</listingToolbar>
+	<columns name="ctech_configurator_product_columns">
+		<selectionsColumn name="ids">
+			<settings>
+				<indexField>product_id</indexField>
+			</settings>
+		</selectionsColumn>
+		<column name="product_id">
+			<settings>
+				<filter>text</filter>
+				<sorting>asc</sorting>
+				<label translate="true">ID</label>
+			</settings>
+		</column>
+		<column name="name">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Name</label>
+			</settings>
+		</column>
+		<column name="sku">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">SKU</label>
+			</settings>
+		</column>
+		<column name="categories">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Categories</label>
+			</settings>
+		</column>
+
+		<column name="brand_code">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Brand Code</label>
+			</settings>
+		</column>
+		<column name="product_line_code">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Product Line Code</label>
+			</settings>
+		</column>
+		<column name="price">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Price</label>
+			</settings>
+		</column>
+		<column name="images">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="visible" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Images</label>
+			</settings>
+		</column>
+		<column name="status">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Status</label>
+			</settings>
+		</column>
+		<column name="created_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Created at</label>
+			</settings>
+		</column>
+		<column name="updated_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Updated at</label>
+			</settings>
+		</column>
+
+		<!--actionsColumn class="Ctech\Configurator\Ui\Component\Listing\Column\ProductActions" name="actions">
+			<settings>
+				<indexField>product_id</indexField>
+				<resizeEnabled>false</resizeEnabled>
+				<resizeDefaultWidth>107</resizeDefaultWidth>
+			</settings>
+		</actionsColumn-->
+	</columns>
+</listing>

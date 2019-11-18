@@ -1,26 +1,28 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="ctech" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="ctech" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="1"
+            showInStore="1">
             <label>ConfigureTech Configurator</label>
             <tab>catalog</tab>
             <resource>Ctech_Configurator::config</resource>
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Configurator Setting</label>
-                <field id="api" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"  showInStore="1">
-                    <label>API Key</label>
-                    <comment><![CDATA[ where to get an API key ? ]]></comment>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                showInStore="1">
+                <label>Setting</label>
+                <field id="store_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                    showInStore="1">
+                    <label>Store Key</label>
+                    <comment>
+                        <![CDATA[]]>
+                    </comment>
                 </field>
-                <field id="checkout_hidden_options" translate="label" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Hide Custom Options at Checkout</label>
-                    <source_model>Ctech\Configurator\Model\Config\Source\HideOptions</source_model>
-                    <comment><![CDATA[ you can choose to hide one or more from the above]]></comment>
-                </field>
-                <field id="attribute_set_id" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>ConfigureTech AttributeSet Id</label>
-                    <source_model>Ctech\Configurator\Model\Config\Source\AttributeSetList</source_model>
-                    <comment><![CDATA[ Select the attributeSet that match ConfigureTech Products , we will use this one to decide weather this product will be configured or not.]]></comment>
+                <field id="store_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                    showInStore="1">
+                    <label>Store Domain</label>
+                    <comment>
+                        <![CDATA[]]>
+                    </comment>
                 </field>
             </group>
         </section>

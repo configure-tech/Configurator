@@ -1,0 +1,38 @@
+﻿<?php $brands = $this->getBrands(); ?>
+<div class="container" class="main-col">
+    <div class="row">
+        <h2 class="page-sub-title"><?php echo __("[Step 2 of 4] Select the Brand(s) You Want to Sell on Your Store"); ?></h2>
+        <hr class="page-separator">
+    </div>
+    <div class="row">
+        <div class="col-m-12">
+            <div class="admin__field field field-interface_locale ">
+                <h3><?php echo __("Avaliable brands"); ?></h3>
+            </div>
+        </div>
+    </div>
+    <form action="<?php echo $this->getUrl('ctechinstaller/installer/brand'); ?>" method="post" data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset admin__fieldset " id="base_fieldset">
+            <div class="row">
+                <?php echo $this->getBlockHtml('formkey') ?>
+                <?php foreach ($brands as $key => $brand_data) : ?>
+                    <div class="col-m-4">
+                        <input type="checkbox" id="brands[<?php echo $this->escapeHtml($brand_data['brand_code']); ?>]" name="brands[<?php echo $this->escapeHtml($brand_data['brand_code']); ?>]" value="<?php echo $this->escapeHtml($brand_data['brand_code'] . "||" . $brand_data['brand_name']); ?>">
+                        <label class="label admin__field-label" for="brands[<?php echo $this->escapeHtml($brand_data['brand_code']); ?>]"><?php echo $this->escapeHtml($brand_data['brand_name']); ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="row">
+                <div class="col-m-12">
+                    <div class=" actions-toolbar" style="float:right">
+                        <div class="primary">
+                            <button type="submit" title="Submit" class="action submit primary">
+                                <span><?php echo __("Submit"); ?></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

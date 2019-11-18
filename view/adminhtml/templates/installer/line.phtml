@@ -1,0 +1,63 @@
+﻿<div class="container" class="main-col">
+    <h2 class="page-sub-title"><?php echo __("[Step 3 of 4] Select the Product Line(s) for Each Brand You Want to Sell on Your Store"); ?></h2>
+    <hr class="page-separator">
+    <?php $lines = $this->getLines(); ?>
+    <form action="<?php echo $this->getUrl('ctechinstaller/installer/line'); ?>" method="post" data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset admin__fieldset " id="base_fieldset">
+            <?php echo $this->getBlockHtml('formkey') ?>
+            <?php foreach ($lines as $brandCode => $lines) : ?>
+                <?php $brand = explode("||", $brandCode); ?>
+                <div class="row">
+                    <div class="col-m-2">
+                        <h3><label class="label admin__field-label select_all"><?php echo $this->escapeHtml($brand[1]); ?></label></h3>
+                        <small>
+                            <span><b><?php echo __("Select All"); ?></b></span>
+                            <input class="select_all" type="checkbox" name="select_all_<?php echo $this->escapeHtml(strtolower($brand[0])); ?>" value="<?php echo $this->escapeHtml(strtolower($brand[0])); ?>">
+                        </small>
+                    </div>
+                    <div class="col-m-10">
+                        <div class="row">
+                            <?php foreach ($lines as $line) : ?>
+                                <div class="col-m-4">
+                                    <input class="<?php echo $this->escapeHtml(strtolower($brand[0])); ?>" type="checkbox" id="line[<?php echo $this->escapeHtml($brandCode); ?>][<?php echo $this->escapeHtml($line['product_line_code']) ?>]" name="line[<?php echo $this->escapeHtml($brandCode) ?>][<?php echo $this->escapeHtml($line['product_line_code']) ?>]" value="<?php echo  $this->escapeHtml($line['product_line_code'] . '||' . $line['product_line_name']); ?>">
+                                    <label class="label admin__field-label " for="line[<?php echo $this->escapeHtml($brandCode) ?>][<?php echo $this->escapeHtml($line['product_line_code']) ?>]"><?php echo $this->escapeHtml($line['product_line_name']); ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <hr class="page-separator">
+                </div>
+            <?php endforeach; ?>
+
+            <div class="row">
+                <div class="col-m-12">
+                    <div class=" actions-toolbar" style="float:right">
+                        <div class="primary">
+                            <button type="submit" title="Submit" class="action submit primary">
+                                <span><?php echo __("Submit"); ?></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+    require(["jquery"], function($) {
+        $(function() {
+            $(".select_all").change(function(e) {
+                e.preventDefault();
+                var checkboxes = $("." + e.srcElement.value);
+                checkboxes.each(function() {
+                    this.checked = !this.checked
+                })
+            })
+        });
+    });
+</script>

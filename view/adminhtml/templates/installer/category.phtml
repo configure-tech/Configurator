@@ -1,0 +1,186 @@
+﻿<?php
+$config = $this->getInstallerConfig();
+$categories = $this->getCategories();
+?>
+<div class="container" class="main-col">
+    <section class="page-partners">
+        <h2 class="page-sub-title">
+            <?php echo __("[Step 4 of 4] Assign Your Selected Product Lines to Categories and Install"); ?>
+        </h2>
+        <p class="partners-description">
+            Select a category from the pulldown, check off the product line(s) you want to assign to that category,
+            and click the "Assign " button. (If you want to assign one or more product lines to more than one category,
+            hold your control or command key down while selecting all the categories you want to assign,
+            check off the product line(s) you want to assign to those categories, and click "Assign ".)
+            Once all your product lines are assigned to categories, click the "<b>Install</b> " button.</p>
+        <p>
+            once you finish install , you can saftly close the page , the new products will be installed automatically in the background
+        </p>
+    </section>
+    <hr class="page-separator">
+    <div class="container">
+        <div class="row">
+            <div class="col-m-12">
+                <form class='installer_form' action="<?php echo $this->getUrl('ctechinstaller/installer/install'); ?>" method="post" data-mage-init='{"validation":{}}'>
+                    <?php echo $this->getBlockHtml('formkey') ?>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-m-9">
+                                <h2><?php echo __('(1) Select items'); ?></h2>
+                            </div>
+                            <div>
+                                <h2><?php echo __('(2) Select category'); ?></h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-m-9">
+                                <?php foreach ($config['selected_lines'] as  $brand => $selected_lines) : ?>
+                                    <?php
+                                        $brand_data = explode("||", $brand);
+                                        $brandCode = $brand_data[0];
+                                        $brandName = $brand_data[1];
+                                        ?>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-m-6">
+                                                <h3 id="<?php echo $this->escapeHtml(strtolower($brandCode)) ?>" class="brandcode"><?php echo __($brandName); ?></h3>
+                                            </div>
+                                            <div class="col-m-5"></div>
+                                            <div class="col-m-1">
+                                                <small>
+                                                    <span><b><?php echo __("Select All"); ?></b></span>
+                                                    <input class="select_all" type="checkbox" name="select_all_<?php echo $this->escapeHtml(strtolower($brand[0])); ?>" value="<?php echo $this->escapeHtml(strtolower($brandCode)); ?>">
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <?php foreach ($selected_lines  as $code => $line) : ?>
+                                                <?php $line_data = explode("||", $line);
+                                                        $lineCode = $line_data[0];
+                                                        $lineName = $line_data[1];  ?>
+                                                <div class="col-m-6">
+                                                    <input class="line <?php echo $this->escapeHtml(strtolower($brandCode)); ?>" type="checkbox" name="line[]" value="<?php echo __($this->escapeHtml($brandCode . "||" . $lineCode)); ?>" id='<?php echo  $this->slugify($lineName . '-' . $lineCode); ?>'>
+                                                    <label class="label admin__field-label" for="<?php echo  $this->slugify($lineName . '-' . $lineCode); ?>"><?php echo $this->escapeHtml($lineName); ?></label>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-m-12">
+                                                <hr class="page-separator">
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="col-m-3">
+                                <select name="categories" id="categories" multiple style="width:100%">
+                                    <?php foreach ($categories as $category) : ?>
+                                        <option value="<?php echo $this->escapeHtml($category["id"]) ?>">
+                                            <?php echo $this->escapeHtml($category["name"]) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-m-9"></div>
+                            <div class="col-m-1">
+                                <button type="reset" class="action danger" id="reset" style="float:right"><?php echo __("Reset"); ?></button>
+                            </div>
+                            <div class="col-m-1">
+                                <button id="assign" style="float:right"><?php echo __("Assign"); ?></button>
+                            </div>
+                            <div class="col-m-1">
+                                <button id="install" class="action submit primary" disabled style="float:right"><?php echo __("Install"); ?></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require(['jquery', 'Magento_Ui/js/modal/alert'], function($, alertDialog) {
+            $(document).ready(function() {
+                window.selection = [];
+                $(".select_all").change(function(e) {
+                    $("#" + $(this).val()).click()
+                })
+                $(".brandcode").click(function(e) {
+                    e.preventDefault();
+                    $("." + $(this).attr("id")).filter(function() {
+                        if (!this.disabled) {
+                            return this.checked = !this.checked;
+                        }
+                    });
+                })
+                $("button#reset").click(function(e) {
+                    e.preventDefault();
+                    $("button#install").prop("disabled", true);
+                    $("button#assign").prop("disabled", false);
+                    $('input.line:checked(:disabled)').filter(function() {
+                        this.disabled = false;
+                        this.checked = !this.checked;
+                        return
+                    });
+                    $("#categories option:selected").prop("selected", false)
+                })
+                $("button#assign").click(function(e) {
+                    e.preventDefault();
+                    var selectedLines = $('input.line:checked:not(:disabled)').filter(function() {
+                        return !this.disabled && this.checked;
+                    });
+                    var selectedCategories = $("#categories option:selected");
+                    if (selectedLines.length <= 0 || selectedCategories.length <= 0) {
+                        return alertDialog({
+                            title: $.mage.__('Error'),
+                            content: $.mage.__('Please make sure to choose at least one category and one line 👎👎')
+                        });
+                    }
+                    var selected = [];
+                    $("#categories option:selected").each(function(index, item) {
+                        selected.push($(item).val());
+                    });
+                    selectedLines.each(function(index, item) {
+                        $(item).addClass("assigned").attr({
+                            "disabled": "disabled"
+                        });
+                        selection.push({
+                            "item": $(item).val(),
+                            "categories": selected
+                        })
+                    });
+                    // unselect options 
+                    $("#categories option:selected").prop("selected", false)
+                    if (window.selection.length == $('input.line').length) {
+                        $("button#install").prop("disabled", false);
+                        $("button#assign").prop("disabled", true);
+                    }
+                })
+
+                $("button#install").click(function(e) {
+                    e.preventDefault();
+                    var form_id = $(e.target).attr('id');
+                    $.ajax({
+                        showLoader: true,
+                        url: '<?php echo $this->getUrl('ctechinstaller/installer/install'); ?>',
+                        data: {
+                            'selection': JSON.stringify(window.selection)
+                        },
+                        type: "POST",
+                        dataType: 'json'
+                    }).done(function(data) {
+                        if (data.success) {
+                            window.location.replace("<?php echo $this->getUrl('ctechinstaller/installer/result'); ?>");
+                        } else {
+                            alertDialog({
+                                title: $.mage.__('Error'),
+                                content: $.mage.__(data.message)
+                            })
+                        }
+
+                    });
+                });
+            })
+        });
+    </script>

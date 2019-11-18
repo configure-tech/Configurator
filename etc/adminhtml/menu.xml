@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add action="ctechinstaller/installer/index" id="Ctech_Configurator::ctech_installer" module="Ctech_Configurator" parent="Ctech::top_level" resource="Magento_Backend::content" sortOrder="1" title="Product Installer"/>
+		<add action="ctechinstaller/product/index" id="Ctech_Configurator::ctech_product" module="Ctech_Configurator" parent="Ctech::top_level" resource="Magento_Backend::content" sortOrder="2" title="Product Installer log"/>
+		<add id="Ctech_Configurator::config_configuration" title="Configuration" module="Ctech_Configurator" sortOrder="99" parent="Ctech::top_level" action="adminhtml/system_config/edit/section/ctech" resource="Magento_Backend::content"/>
+		<add id="Ctech::top_level" module="Ctech_Configurator" resource="Magento_Backend::content" sortOrder="30" title="Configurator"/>
+	</menu>
+</config>

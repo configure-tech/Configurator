@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <head>
-        <script src="//ctiapi.com/js/angular-app/widget/cti-widget.js" src_type="url"/>
-    </head>
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Text" name="angular_app">
+                <arguments>
+                    <argument name="text" xsi:type="string">
+                        <![CDATA[<script type="text/javascript" src="//ctiapi.com/js/angular-app/widget/cti-widget.js"></script>]]>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
         <referenceContainer name="content">
-            <block class="Magento\Catalog\Block\Product\View"
-                   name="product.view.angular"
-                   template="Ctech_Configurator::product/view/angular.phtml"
-                   before="reviews">
+            <block class="Magento\Catalog\Block\Product\View" name="product.view.angular"
+                template="Ctech_Configurator::product/view/angular.phtml" after="product.detail.info">
             </block>
             <referenceContainer name="product.info.form.content">
-                <block class="Magento\Catalog\Block\Product\View" name="product.info.addtocart" as="addtocart" template="Ctech_Configurator::product/view/addtocart.phtml"/>
+                <block class="Magento\Catalog\Block\Product\View" name="product.info.addtocart" as="addtocart"
+                    template="Ctech_Configurator::product/view/addtocart.phtml" />
             </referenceContainer>
         </referenceContainer>
-    </body>
+        </body>
 </page>

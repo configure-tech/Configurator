@@ -1,0 +1,40 @@
+﻿<div>
+    <form method='POST' data-mage-init='{"validation":{}}' action="<?php echo $block->getUrl("ctechinstaller/installer/index"); ?>" data-hasrequired="* Required Fields">
+        <?php echo $this->getBlockHtml('formkey') ?>
+        <div id="container" class="main-col">
+            <section class="page-partners">
+                <h2 class="page-sub-title">
+                    <?php echo __("[Step 1 of 4] Enter Your Credentials"); ?>
+                </h2>
+                <p class="partners-description"></p>
+                <h3 class="page-sub-sub-title">
+                    <?php echo __('If you don\'t have credentials, please contact <a href="https://configuretech.com/">ConfigureTech</a> to get them'); ?>
+                </h3>
+                <hr class="page-separator">
+                <fieldset class="fieldset admin__fieldset " id="base_fieldset">
+                    <br />
+                    <div class="admin__field field required _required">
+                        <label class="label admin__field-label" for="storekey"><span><?php echo __('Store Key'); ?></span></label>
+                        <div class="admin__field-control control">
+                            <input id="storekey" name="storekey" value="<?php echo $this->escapeHtml($this->getStoreConfig('store_key')); ?>" title="Store Key" type="text" class=" input-text admin__control-text required-entry _required" aria-required="true" data-validate='{"required":true}' />
+                        </div>
+                    </div>
+
+                    <div class="admin__field field required _required">
+                        <label class="label admin__field-label" for="storedomain"><span><?php echo __('Store Domain'); ?></span></label>
+                        <div class="admin__field-control control">
+                            <input id="storedomain" name="storedomain" value="<?php echo $this->escapeHtml($this->getStoreConfig('store_domain')); ?>" title="Store Domain" type="text" class=" input-text admin__control-text required-entry _required" aria-required="true" data-validate='{"required":true}' />
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="actions-toolbar" style="float:right">
+                    <div class="primary">
+                        <button type="submit" title="Submit" class="action submit primary">
+                            <span><?php echo __('Submit'); ?></span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+</div>

@@ -2,10 +2,22 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\Quote\Model\Quote">
-        <plugin name="Quote_Addproduct_Around"
-                type="Ctech\Configurator\Plugin\Magento\Quote\Model\Quote"
-                sortOrder="1"
-                disabled="false"
-        />
+        <plugin name="Quote_Addproduct_Around" type="Ctech\Configurator\Plugin\Magento\Quote\Model\Quote" sortOrder="1" disabled="false"/>
     </type>
+    <preference for="Ctech\Configurator\Api\ProductRepositoryInterface" type="Ctech\Configurator\Model\ProductRepository"/>
+	<preference for="Ctech\Configurator\Api\Data\ProductInterface" type="Ctech\Configurator\Model\Data\Product"/>
+	<preference for="Ctech\Configurator\Api\Data\ProductSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Ctech\Configurator\Model\ResourceModel\Product\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">ctech_configurator_product</argument>
+			<argument name="resourceModel" xsi:type="string">Ctech\Configurator\Model\ResourceModel\Product\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="ctech_configurator_product_listing_data_source" xsi:type="string">Ctech\Configurator\Model\ResourceModel\Product\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
 </config>
