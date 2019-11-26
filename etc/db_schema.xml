@@ -8,7 +8,7 @@
 		<column length="512" name="categories" nullable="true" xsi:type="varchar"/>
 		<column length="255" name="brand_code" nullable="false" xsi:type="varchar"/>
 		<column length="255" name="product_line_code" nullable="true" xsi:type="varchar"/>
-		<column xsi:type="decimal" name="price" scale="3" precision="9" unsigned="false" nullable="false" default="0" comment="Price"/>
+		<column xsi:type="decimal" name="price" scale="3" precision="12" unsigned="false" nullable="false" comment="Price"/>
 		<column name="images" nullable="true" xsi:type="text"/>
 		<column length="255" name="name" nullable="true" xsi:type="varchar"/>
 		<column length="255" name="sku" nullable="true" xsi:type="varchar"/>

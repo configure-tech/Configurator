@@ -109,7 +109,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
 					'price',
 					Table::TYPE_DECIMAL,
 					'12,3',
-					['nullable' => false, 'default' => ''],
+					['nullable' => false],
 					'Price'
 				)->addColumn(
 					'images',
