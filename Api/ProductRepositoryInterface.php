@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,53 +24,59 @@
 
 namespace Ctech\Configurator\Api;
 
+use Ctech\Configurator\Api\Data\ProductInterface;
+use Ctech\Configurator\Api\Data\ProductSearchResultsInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+
 interface ProductRepositoryInterface
 {
 
     /**
      * Save Product
-     * @param \Ctech\Configurator\Api\Data\ProductInterface $product
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param ProductInterface $product
+     * @return ProductInterface
+     * @throws LocalizedException
      */
     public function save(
-        \Ctech\Configurator\Api\Data\ProductInterface $product
+        ProductInterface $product
     );
 
     /**
      * Retrieve Product
      * @param string $productId
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @return ProductInterface
+     * @throws LocalizedException
      */
     public function getById($productId);
 
     /**
      * Retrieve Product matching the specified criteria.
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Ctech\Configurator\Api\Data\ProductSearchResultsInterface
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return ProductSearchResultsInterface
+     * @throws LocalizedException
      */
     public function getList(
-        \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+        SearchCriteriaInterface $searchCriteria
     );
 
     /**
      * Delete Product
-     * @param \Ctech\Configurator\Api\Data\ProductInterface $product
+     * @param ProductInterface $product
      * @return bool true on success
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function delete(
-        \Ctech\Configurator\Api\Data\ProductInterface $product
+        ProductInterface $product
     );
 
     /**
      * Delete Product by ID
      * @param string $productId
      * @return bool true on success
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function deleteById($productId);
 }

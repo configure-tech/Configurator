@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,9 +24,10 @@
 
 namespace Ctech\Configurator\Api\Data;
 
-interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterface
-{
+use Magento\Framework\Api\ExtensibleDataInterface;
 
+interface ProductInterface extends ExtensibleDataInterface
+{
     const PRICE = 'price';
     const IMAGES = 'images';
     const NAME = 'name';
@@ -45,7 +46,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set product_id
      * @param string $productId
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setProductId($productId);
 
@@ -58,7 +59,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set categories
      * @param string $categories
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setCategories($categories);
 
@@ -86,7 +87,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set brand_code
      * @param string $brandCode
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setBrandCode($brandCode);
 
@@ -99,7 +100,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set product_line_code
      * @param string $productLineCode
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setProductLineCode($productLineCode);
 
@@ -112,7 +113,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set price
      * @param string $price
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setPrice($price);
 
@@ -125,7 +126,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set images
      * @param string $images
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setImages($images);
 
@@ -138,7 +139,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set name
      * @param string $name
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setName($name);
 
@@ -151,7 +152,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set sku
      * @param string $sku
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setSku($sku);
 
@@ -164,7 +165,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set status
      * @param string $status
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setStatus($status);
 
@@ -177,7 +178,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set created_at
      * @param string $createdAt
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setCreatedAt($createdAt);
 
@@ -190,7 +191,7 @@ interface ProductInterface extends \Magento\Framework\Api\ExtensibleDataInterfac
     /**
      * Set updated_at
      * @param string $updatedAt
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return self
      */
     public function setUpdatedAt($updatedAt);
 }

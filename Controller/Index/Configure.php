@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,15 +24,23 @@
 
 namespace Ctech\Configurator\Controller\Index;
 
-use \Magento\Checkout\Model\Cart;
-use \Magento\Framework\View\Result\PageFactory;
-use \Magento\Framework\App\Action\Context;
-use \Magento\Framework\Phrase;
-use \Magento\Framework\App\Action\Action;
-use \Magento\Catalog\Model\Product\Attribute\Source\Status;
-use \Magento\Framework\App\CsrfAwareActionInterface;
-use \Magento\Framework\App\RequestInterface;
-use \Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Checkout\Model\Cart;
+use Magento\Customer\Model\Session;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\NotFoundException;
+use Magento\Framework\Phrase;
+use Magento\Framework\View\Result\PageFactory;
+use Psr\Log\LoggerInterface;
+use Magento\Framework\Escaper;
+use Magento\Catalog\Model\ProductRepository;
 
 /**
  * Class Configure
@@ -40,27 +48,58 @@ use \Magento\Framework\App\Request\InvalidRequestException;
  */
 class Configure extends Action implements CsrfAwareActionInterface
 {
-
     protected $resultPageFactory;
 
     /** @var $cart Cart */
     protected $cart;
+    /**
+     * @var Session
+     */
+    private $session;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+    /**
+     * @var Escaper
+     */
+    private $escaper;
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
 
     /**
      * Configure constructor.
      * @param Context $context
+     * @param ProductRepository $productRepository
      * @param PageFactory $resultPageFactory
      * @param Cart $cart
+     * @param Session $session
+     * @param LoggerInterface $logger
+     * @param Escaper $escaper
      */
-    public function __construct(Context $context, PageFactory $resultPageFactory, Cart $cart)
-    {
+    public function __construct(
+        Context $context,
+        ProductRepository $productRepository,
+        PageFactory $resultPageFactory,
+        Cart $cart,
+        Session $session,
+        LoggerInterface $logger,
+        Escaper $escaper
+
+    ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->cart = $cart;
+        $this->session = $session;
+        $this->logger = $logger;
+        $this->escaper = $escaper;
+        $this->productRepository = $productRepository;
         parent::__construct($context);
     }
 
     /**
-     * 
+     *
      * Create exception in case CSRF validation failed.
      * Return null if default exception will suffice.
      *
@@ -85,17 +124,16 @@ class Configure extends Action implements CsrfAwareActionInterface
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface
-     * @throws \Magento\Framework\Exception\NotFoundException
+     * @return ResponseInterface
+     * @throws NotFoundException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        $logger = $this->_objectManager->get('Psr\Log\LoggerInterface');
         if ($this->getRequest()->isPost()) {
             /// we need to validate the code before accepting it , we haven't agreed on a method yet
-            $session        = $this->_objectManager->get('Magento\Customer\Model\Session');
-            $cart           = $this->cart;
-
+            $cart                     = $this->cart;
             $request                  = $this->getRequest();
             $params                   = $request->getParams();
             $products                 = $params["description"];
@@ -108,18 +146,18 @@ class Configure extends Action implements CsrfAwareActionInterface
             // re-add timestamp for Lloyd Mats Store , its optional
             $timestamp                = isset($params["timestamp"]) ? $params["timestamp"] : "";
 
-            $product                  = $this->_objectManager->get('Magento\Catalog\Model\Product')->load($product_id);
+            $product                  = $this->productRepository->getById($product_id);
             $configuretech_purchase_sku = $product->getData("configuretech_purchase_product");
             if ($configuretech_purchase_sku) {
                 $product = $product->reset()->load($product->getIdBySku($configuretech_purchase_sku));
             } else {
-                $logger->addError($product->getId() . " has a missing attributes [configuretech_purchase_product]");
-                throw new \Magento\Framework\Exception\NotFoundException(new Phrase("System Error - this product has missing attributes , please contact support"));
+                $this->logger->error($product->getId() . " has a missing attributes [configuretech_purchase_product]");
+                throw new NotFoundException(new Phrase("System Error - this product has missing attributes , please contact support"));
             }
 
             if (is_null($product) || ($product->getStatus() == Status::STATUS_DISABLED)) {
                 $this->messageManager->addErrorMessage(
-                    $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml("We're unable to add this product to your cart, it might be disabled ,  Please try again later or contact support.")
+                    $this->escaper->escapeHtml("We're unable to add this product to your cart, it might be disabled ,  Please try again later or contact support.")
                 );
                 return $this->_redirect($this->_redirect->getRefererUrl());
             }
@@ -140,7 +178,7 @@ class Configure extends Action implements CsrfAwareActionInterface
             }
 
             // match the product's custom options with the data in the post-back
-            $options = array();
+            $options = [];
             foreach ($product->getOptions() as $o) {
                 if ($o->getType() != "field") {
                     continue;
@@ -161,7 +199,7 @@ class Configure extends Action implements CsrfAwareActionInterface
             }
 
             $cart->save();
-            $session->setCartWasUpdated(true);
+            $this->session->setCartWasUpdated(true);
             $this->_eventManager->dispatch(
                 'checkout_cart_add_product_complete',
                 [
@@ -172,12 +210,12 @@ class Configure extends Action implements CsrfAwareActionInterface
             );
 
             $this->messageManager->addSuccessMessage(
-                $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml("the selected product has been added to your cart")
+                $this->escaper->escapeHtml("the selected product has been added to your cart")
             );
             return $this->_redirect('checkout/cart');
         } else {
-            $logger->addError("Page wasn't accessed with POST request");
-            throw new \Magento\Framework\Exception\NotFoundException(new Phrase("Method not allowed!"));
+            $this->logger->error("Page wasn't accessed with POST request");
+            throw new NotFoundException(new Phrase("Method not allowed!"));
         }
     }
 }

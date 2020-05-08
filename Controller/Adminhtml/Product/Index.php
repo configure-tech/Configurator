@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,12 @@
 
 namespace Ctech\Configurator\Controller\Adminhtml\Product;
 
-class Index extends \Magento\Backend\App\Action
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\PageFactory;
+
+class Index extends Action
 {
 
     protected $resultPageFactory;
@@ -32,12 +37,12 @@ class Index extends \Magento\Backend\App\Action
     /**
      * Constructor
      *
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        Context $context,
+        PageFactory $resultPageFactory
     ) {
 
         $this->resultPageFactory = $resultPageFactory;
@@ -47,7 +52,7 @@ class Index extends \Magento\Backend\App\Action
     /**
      * Index action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {

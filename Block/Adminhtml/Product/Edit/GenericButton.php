@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ abstract class GenericButton
     protected $context;
 
     /**
-     * @param \Magento\Backend\Block\Widget\Context $context
+     * @param Context $context
      */
     public function __construct(Context $context)
     {

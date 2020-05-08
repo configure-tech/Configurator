@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,24 +24,25 @@
 
 namespace Ctech\Configurator\Model;
 
-use Ctech\Configurator\Api\ProductRepositoryInterface;
-use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Api\ExtensibleDataObjectConverter;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Store\Model\StoreManagerInterface;
+use Ctech\Configurator\Api\Data\ProductInterface;
 use Ctech\Configurator\Api\Data\ProductInterfaceFactory;
-use Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface;
-use Ctech\Configurator\Model\ResourceModel\Product as ResourceProduct;
-use Magento\Framework\Api\DataObjectHelper;
-use Magento\Framework\Reflection\DataObjectProcessor;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Ctech\Configurator\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Ctech\Configurator\Api\Data\ProductSearchResultsInterfaceFactory;
+use Ctech\Configurator\Api\ProductRepositoryInterface;
+use Ctech\Configurator\Model\ResourceModel\Product as ResourceProduct;
+use Ctech\Configurator\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
+use Magento\Framework\Api\DataObjectHelper;
+use Magento\Framework\Api\ExtensibleDataObjectConverter;
+use Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\CouldNotDeleteException;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Reflection\DataObjectProcessor;
+use Magento\Store\Model\StoreManagerInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-
     private $collectionProcessor;
 
     protected $extensibleDataObjectConverter;
@@ -62,7 +63,6 @@ class ProductRepository implements ProductRepositoryInterface
     protected $productCollectionFactory;
 
     protected $dataObjectProcessor;
-
 
     /**
      * @param ResourceProduct $resource
@@ -106,9 +106,8 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function save(
-        \Ctech\Configurator\Api\Data\ProductInterface $product
-    ) {
+    public function save(ProductInterface $product)
+    {
         /* if (empty($product->getStoreId())) {
             $storeId = $this->storeManager->getStore()->getId();
             $product->setStoreId($storeId);
@@ -117,7 +116,7 @@ class ProductRepository implements ProductRepositoryInterface
         $productData = $this->extensibleDataObjectConverter->toNestedArray(
             $product,
             [],
-            \Ctech\Configurator\Api\Data\ProductInterface::class
+            ProductInterface::class
         );
 
         $productModel = $this->productFactory->create()->setData($productData);
@@ -149,14 +148,13 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getList(
-        \Magento\Framework\Api\SearchCriteriaInterface $criteria
-    ) {
+    public function getList(SearchCriteriaInterface $criteria)
+    {
         $collection = $this->productCollectionFactory->create();
 
         $this->extensionAttributesJoinProcessor->process(
             $collection,
-            \Ctech\Configurator\Api\Data\ProductInterface::class
+            ProductInterface::class
         );
 
         $this->collectionProcessor->process($criteria, $collection);
@@ -177,9 +175,8 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function delete(
-        \Ctech\Configurator\Api\Data\ProductInterface $product
-    ) {
+    public function delete(ProductInterface $product)
+    {
         try {
             $productModel = $this->productFactory->create();
             $this->resource->load($productModel, $product->getProductId());

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,20 @@
 
 namespace Ctech\Configurator\Api\Data;
 
-interface ProductSearchResultsInterface extends \Magento\Framework\Api\SearchResultsInterface
+use Magento\Framework\Api\SearchResultsInterface;
+
+interface ProductSearchResultsInterface extends SearchResultsInterface
 {
 
     /**
      * Get Product list.
-     * @return \Ctech\Configurator\Api\Data\ProductInterface[]
+     * @return ProductInterface[]
      */
     public function getItems();
 
     /**
      * Set categories list.
-     * @param \Ctech\Configurator\Api\Data\ProductInterface[] $items
+     * @param ProductInterface[] $items
      * @return $this
      */
     public function setItems(array $items);

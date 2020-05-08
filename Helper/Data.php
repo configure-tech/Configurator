@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,31 +25,33 @@
 namespace Ctech\Configurator\Helper;
 
 use Ctech\Configurator\Model\ProductFactory as ProductCronFactory;
-use GuzzleHttp\RequestOptions;
+use GuzzleHttp\Client;
 use function GuzzleHttp\json_decode;
+use GuzzleHttp\RequestOptions;
 use Magento\Backend\Model\Session;
-use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Api\Data\ProductInterfaceFactory;
 use Magento\Catalog\Api\Data\ProductCustomOptionInterface;
-use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Api\Data\ProductInterfaceFactory;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
-use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\Product\OptionFactory;
-use Magento\Framework\HTTP\Client\Curl;
-use Magento\Framework\App\Cache\TypeListInterface;
+use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\Product\Visibility;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory;
 use Magento\Framework\App\Cache\Frontend\Pool;
+use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ConfigResource\ConfigInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\ObjectManager\ObjectManager;
-use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory;
-use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-
+use Throwable;
 
 class Data extends AbstractHelper
 {
@@ -60,7 +62,7 @@ class Data extends AbstractHelper
     /** @var installer_domain_name string  */
     public $installer_domain_name = "magento.ext";
 
-    /** \Magento\Framework\HTTP\Client\Curl  */
+    /** @var Curl  */
     protected $curlClient;
 
     /** @var DirectoryList  */
@@ -87,22 +89,21 @@ class Data extends AbstractHelper
     /** @var  Pool */
     private $cacheFrontendPool;
 
-
     /** @var  ProductCronFactory */
     private $ProductCronFactory;
 
-    /* @var Magento\Framework\ObjectManager\ObjectManager  $om */
+    /* @var ObjectManager  $om */
     protected $om;
 
-    /* @var Magento\Backend\Model\Session  $session */
+    /** @var Session  */
     protected $session;
-    /** String  */
+    /** @var string  */
     protected $VALIDATE_KEY_URL = "https://ctiapi.com/api/v1/validate-key";
-    /** String  */
+    /** @var string  */
     protected $BRAND_LIST_URL = "https://ctiapi.com/api/v1/brand/list";
-    /** String  */
+    /** @var string  */
     protected $PRODUCT_LINE_LIST_URL = "https://ctiapi.com/api/v1/product-line/list";
-    /** String  */
+    /** @var string  */
     protected $PRODUCT_LINE_DATA_LIST_URL = "https://ctiapi.com/api/v1/product-line";
 
     /**
@@ -110,7 +111,6 @@ class Data extends AbstractHelper
      */
 
     private $config;
-
 
     public function __construct(
         Curl $curl,
@@ -147,8 +147,8 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get attribute set by name 
-     * 
+     * get attribute set by name
+     *
      * @param string $attributeSetName
      * @return int attributeSetId
      */
@@ -165,7 +165,7 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get attributeset Name by Id  
+     * get attributeset Name by Id
      *
      * @param int $id
      * @return string
@@ -192,7 +192,7 @@ class Data extends AbstractHelper
     }
 
     /**
-     * save config to db 
+     * save config to db
      *
      * @param string  $key
      * @param string  $value
@@ -207,7 +207,6 @@ class Data extends AbstractHelper
             Store::DEFAULT_STORE_ID
         );
     }
-
 
     /**
      *
@@ -226,7 +225,6 @@ class Data extends AbstractHelper
         return false;
     }
 
-
     /**
      *
      * get an array of hidden options.
@@ -238,13 +236,13 @@ class Data extends AbstractHelper
     }
 
     /**
-     * get installer session data 
+     * get installer session data
      *
      * @return array
      */
     public function getInstallerSessionData(): array
     {
-        $data = $this->session->getData("ctechInstaller");;
+        $data = $this->session->getData("ctechInstaller");
         if (is_array($data)) {
             return $data;
         }
@@ -254,8 +252,8 @@ class Data extends AbstractHelper
     /**
      * validate keys
      *
-     * @param String $apikey
-     * @param String $domain
+     * @param String $storeKey
+     * @param String $storeDomain
      * @return boolean
      */
     public function validateKey(String  $storeKey, String $storeDomain)
@@ -273,7 +271,7 @@ class Data extends AbstractHelper
             ]);
             $body = json_decode($response->getBody()->__toString(), true);
             return $body;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return ["message" => $th->getMessage()];
         }
     }
@@ -330,7 +328,6 @@ class Data extends AbstractHelper
         return $data;
     }
 
-
     /**
      * get product line data
      *
@@ -359,17 +356,11 @@ class Data extends AbstractHelper
         return $data;
     }
 
-
     /**
-     * add product to queue 
+     * add product to queue
      *
-     * @param string $name
-     * @param number $price
-     * @param array $categories
-     * @param array $images
-     * @param string $brand_code
-     * @param string $product_line_code
-     * @return bool 
+     * @param array $config
+     * @return bool
      */
     public function addProductToCron(array $config): bool
     {
@@ -393,7 +384,7 @@ class Data extends AbstractHelper
             $row->save();
             unset($row);
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->logger->critical($th->getMessage());
             return false;
         }
@@ -404,6 +395,7 @@ class Data extends AbstractHelper
      *
      * @param array $data
      * @return array
+     * @throws FileSystemException
      */
     public function createProducts(array $data): array
     {
@@ -417,36 +409,35 @@ class Data extends AbstractHelper
         $category_ids = explode(',', $data['categories']);
         /// lets create the product on magento
         $images = $this->downloadImages(json_decode($data['images']));
-        ///  create the hidden product 
+        ///  create the hidden product
         $sku  = strtoupper(str_replace(" ", "_", $product_name));
         $sku_hidden_product  = strtolower($sku . '_display');
         $configuretech_purchase_product = $sku_hidden_product;
         $website_id = [$this->storeManager->getDefaultStoreView()->getWebsiteId()];
-        // visible product 
+        // visible product
         $this->createSingleProductAndSave($brandCode, $productLineCode, $sku, $product_name, $attribute_set_id, $category_ids, $website_id, $product_price, $images, false, $configuretech_purchase_product);
-        // hidden product 
+        // hidden product
         $this->createSingleProductAndSave($brandCode, $productLineCode, $sku_hidden_product, $product_name, $attribute_set_id, $category_ids, $website_id, $product_price, $images, true);
         return ['success' => 'true', 'message' => $product_name . ' has been installed successfully'];
     }
 
     /**
-     * http client class 
+     * http client class
      *
      * @return Client
      */
     private function getClient()
     {
-        $client = new \GuzzleHttp\Client();
-        return $client;
+        return  new Client();
+        //return $this->curlClient;
     }
 
-
     /**
-     * download images and returns an array of its downloaded folder locations 
-     * 
+     * download images and returns an array of its downloaded folder locations
+     *
      * @param array $images
      * @return array
-     * @throws \Magento\Framework\Exception\FileSystemException
+     * @throws FileSystemException
      */
     private function downloadImages(array $images): array
     {
@@ -458,18 +449,23 @@ class Data extends AbstractHelper
         $httpClient = $this->getClient();
         foreach ($images as $image) {
             try {
+                $this->logger->info('started downloading this url: ' . $image);
                 $image_path = parse_url($image, PHP_URL_PATH);
                 $imageName = pathinfo($image_path, PATHINFO_BASENAME);
-                $imageFileResource = fopen($varDirectory . DIRECTORY_SEPARATOR . $imageName, 'w+');
-                if (file_exists($varDirectory . DIRECTORY_SEPARATOR . $imageName)) {
-                    $saved_images[] = $varDirectory . DIRECTORY_SEPARATOR . $imageName;
+                $targetImageResource = fopen($varDirectory . DIRECTORY_SEPARATOR . $imageName, 'w+');
+                $targetFilePath = $varDirectory . DIRECTORY_SEPARATOR . $imageName;
+                if (file_exists($targetFilePath) && filesize($targetFilePath) > 0 ) {
+                    $saved_images[] = $targetFilePath;
                     continue;
                 }
-                $response =  $httpClient->get($image, [RequestOptions::SINK => $imageFileResource]);
+                $response =  $httpClient->get($image, [RequestOptions::SINK => $targetImageResource]);
                 if ($response->getStatusCode() === 200) {
-                    $saved_images[] = $varDirectory . DIRECTORY_SEPARATOR . $imageName;
+                    $saved_images[] = $targetFilePath;
                 }
-            } catch (\Throwable $th) {
+                $this->logger->info('finished downloading this url: ' . $image);
+                continue;
+            } catch (Throwable $th) {
+                $this->_logger->info("failed to download this image: " . $image);
                 $this->_logger->error($th->getMessage());
                 continue;
             }
@@ -484,7 +480,7 @@ class Data extends AbstractHelper
      */
     private function getOptionsArray(): array
     {
-        $optionsArray = [
+        return [
             [
                 'title'         => 'Description',
                 'type'          => ProductCustomOptionInterface::OPTION_TYPE_FIELD,
@@ -519,12 +515,14 @@ class Data extends AbstractHelper
                 "price"         => "0",
             ]
         ];
-        return $optionsArray;
     }
 
     /**
-     * create and save product 
+     * create and save product
      *
+     * @param $brandCode
+     * @param $productLineCode
+     * @param $sku
      * @param String $product_name
      * @param Integer $attribute_set_id
      * @param Array $category_ids
@@ -532,7 +530,11 @@ class Data extends AbstractHelper
      * @param Double $product_price
      * @param Array $images
      * @param Bool $hidden_product
-     * @return Product 
+     * @param string $configuretech_purchase_product
+     * @return \Magento\Catalog\Api\Data\ProductInterface
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
      */
     public function createSingleProductAndSave(
         $brandCode,
@@ -562,15 +564,15 @@ class Data extends AbstractHelper
         }
         $_product->setPrice($product_price);
         foreach ($images as $image) {
-            $_product->addImageToMediaGallery($image, array('image', 'small_image', 'thumbnail'), false, false);
+            $_product->addImageToMediaGallery($image, ['image', 'small_image', 'thumbnail'], false, false);
         }
         $_product->setStockData(
-            array(
+            [
                 'use_config_manage_stock' => 0, //'Use config settings' checkbox
                 'manage_stock' => 0, //manage stock
                 'is_in_stock' => 1, //Stock Availability
                 //'qty' => 99999 //qty
-            )
+            ]
         );
         $_product = $this->productRepository->save($_product);
         $_product->setBrandCode($brandCode);
@@ -595,21 +597,21 @@ class Data extends AbstractHelper
     }
 
     /**
-     * clean cache 
+     * clean cache
      *
      * @return void
      */
     public function cleanCache(): void
     {
         try {
-            $types = array('config', 'layout', 'block_html', 'collections', 'reflection', 'db_ddl', 'eav', 'config_integration', 'config_integration_api', 'full_page', 'translate', 'config_webservice');
+            $types = ['config', 'layout', 'block_html', 'collections', 'reflection', 'db_ddl', 'eav', 'config_integration', 'config_integration_api', 'full_page', 'translate', 'config_webservice'];
             foreach ($types as $type) {
                 $this->cacheTypeList->cleanType($type);
             }
             foreach ($this->cacheFrontendPool as $cacheFrontend) {
                 $cacheFrontend->getBackend()->clean();
             }
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->logger->error($th);
         }
     }

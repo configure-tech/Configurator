@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,18 +24,25 @@
 
 namespace Ctech\Configurator\Controller\Adminhtml\Product;
 
-class InlineEdit extends \Magento\Backend\App\Action
+use Ctech\Configurator\Model\Product;
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\ResultInterface;
+
+class InlineEdit extends Action
 {
 
     protected $jsonFactory;
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
+     * @param Context $context
+     * @param JsonFactory $jsonFactory
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $jsonFactory
+        Context $context,
+        JsonFactory $jsonFactory
     ) {
         parent::__construct($context);
         $this->jsonFactory = $jsonFactory;
@@ -44,11 +51,11 @@ class InlineEdit extends \Magento\Backend\App\Action
     /**
      * Inline edit action
      *
-     * @return \Magento\Framework\Controller\ResultInterface
+     * @return ResultInterface
      */
     public function execute()
     {
-        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+        /** @var Json $resultJson */
         $resultJson = $this->jsonFactory->create();
         $error = false;
         $messages = [];
@@ -60,8 +67,8 @@ class InlineEdit extends \Magento\Backend\App\Action
                 $error = true;
             } else {
                 foreach (array_keys($postItems) as $modelid) {
-                    /** @var \Ctech\Configurator\Model\Product $model */
-                    $model = $this->_objectManager->create(\Ctech\Configurator\Model\Product::class)->load($modelid);
+                    /** @var Product $model */
+                    $model = $this->_objectManager->create(Product::class)->load($modelid);
                     try {
                         $model->setData(array_merge($model->getData(), $postItems[$modelid]));
                         $model->save();

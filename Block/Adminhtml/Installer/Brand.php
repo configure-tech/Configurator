@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,16 +25,16 @@
 namespace Ctech\Configurator\Block\Adminhtml\Installer;
 
 use Ctech\Configurator\Helper\Data;
-use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Model\Session;
 
 class Brand extends Template
 {
-    /** @var  \Ctech\Configurator\Helper\Data $helper */
+    /** @var  Data $helper */
     protected $helper;
 
-    /** @var  \Magento\Backend\Model\Session $session  */
+    /** @var  Session $session  */
     protected $session;
 
     /**
@@ -59,7 +59,7 @@ class Brand extends Template
     /**
      * get brands from API
      *
-     * @return array 
+     * @return array
      */
     public function getBrands()
     {

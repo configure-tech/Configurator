@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 
 namespace Ctech\Configurator\Model\ResourceModel\Product;
 
+use Ctech\Configurator\Model\Product;
+use Ctech\Configurator\Model\ResourceModel\Product as ResourceModelProduct;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 class Collection extends AbstractCollection
@@ -36,9 +38,6 @@ class Collection extends AbstractCollection
      */
     protected function _construct()
     {
-        $this->_init(
-            \Ctech\Configurator\Model\Product::class,
-            \Ctech\Configurator\Model\ResourceModel\Product::class
-        );
+        $this->_init(Product::class, ResourceModelProduct::class);
     }
 }

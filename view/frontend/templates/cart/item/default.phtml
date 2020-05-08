@@ -1,12 +1,9 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
-/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+/** @var $block Renderer */
+
+use Magento\Checkout\Block\Cart\Item\Renderer;
 
 $_item = $block->getItem();
 $product = $_item->getProduct();
@@ -48,7 +45,9 @@ $isCtechProduct = $ctech_helper->isCtechProduct($_item->getProduct());
             <?php if ($_options = $block->getOptionList()):?>
                 <dl class="item-options">
                     <?php foreach ($_options as $_option) : ?>
-                        <?php if(in_array($_option['label'], $hidden_options) !== false) continue; ?>
+                        <?php if (in_array($_option['label'], $hidden_options) !== false) {
+                                continue;
+                        } ?>
                         <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
                         <dt><?php echo $block->escapeHtml($_option['label']) ?></dt>
                         <dd>
@@ -95,7 +94,7 @@ $isCtechProduct = $ctech_helper->isCtechProduct($_item->getProduct());
             </label>
             <div class="control qty">
                 <input id="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty"
-                       name="cart[<?php /* @escapeNotVerified */ echo $_item->getId() ?>][qty]"
+                       name="cart[<?php echo $_item->getId() ?>][qty]"
                        data-cart-item-id="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>"
                        value="<?php /* @escapeNotVerified */ echo $block->getQty() ?>"
                        type="number"

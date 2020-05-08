@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,16 +24,16 @@
 
 namespace Ctech\Configurator\Block\Adminhtml\Installer;
 
+use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
+use Magento\Backend\Model\Session;
 use Magento\Catalog\Helper\Category as CategoryHelper;
 use Magento\Catalog\Model\CategoryRepository;
-use Magento\Backend\Model\Session;
-use Magento\Backend\Block\Template\Context;
-use Magento\Backend\Block\Template;
 
 class Category extends Template
 {
 
-    /* @var \Magento\Catalog\Helper\Category   $categoryHelper */
+    /* @var CategoryHelper $categoryHelper */
     protected $categoryHelper;
     protected $categoryRepository;
     protected $categoryList;
@@ -41,14 +41,17 @@ class Category extends Template
     /**
      * Constructor
      *
-     * @param \Magento\Backend\Block\Template\Context  $context
+     * @param Context $context
+     * @param Session $session
+     * @param CategoryHelper $categoryHelper
+     * @param CategoryRepository $categoryRepository
+     * @param array $data
      */
     public function __construct(
         Context $context,
         Session $session,
         CategoryHelper $categoryHelper,
         CategoryRepository $categoryRepository,
-
         array $data = []
     ) {
         $this->session = $session;
@@ -59,7 +62,7 @@ class Category extends Template
 
     /**
      *  get installer config
-     *  
+     *
      * @return array
      */
     public function getInstallerConfig(): array
@@ -67,9 +70,8 @@ class Category extends Template
         return (array) $this->session->getData('ctechInstaller');
     }
 
-
     /**
-     * get active categories array 
+     * get active categories array
      *
      * @return array
      */
@@ -79,16 +81,16 @@ class Category extends Template
         $categoris =  $this->categoryHelper->getStoreCategories(false, true, true)->toArray();
         foreach ($categoris as  $category) {
             $level = (int) $category['level'];
-            $name = str_repeat("--", $level) . " "   . $category['name'];
+            $name = str_repeat("--", $level) . " " . $category['name'];
             $c[$category['entity_id']] = ['id' => (int) $category['entity_id'],  'name' =>  $name];
         }
         return $c;
     }
 
     /**
-     * slugify a string 
+     * slugify a string
      *
-     * @param [type] $text
+     * @param string $text
      * @return string
      */
     public function slugify($text): string

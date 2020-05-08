@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,9 +24,12 @@
 
 namespace Ctech\Configurator\Model\Data;
 
+use Ctech\Configurator\Api\Data\ProductExtensionInterface;
 use Ctech\Configurator\Api\Data\ProductInterface;
+use Magento\Framework\Api\AbstractExtensibleObject;
+use Magento\Framework\Api\ExtensionAttributesInterface;
 
-class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements ProductInterface
+class Product extends AbstractExtensibleObject implements ProductInterface
 {
 
     /**
@@ -41,7 +44,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set product_id
      * @param string $productId
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setProductId($productId)
     {
@@ -60,7 +63,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set categories
      * @param string $categories
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setCategories($categories)
     {
@@ -69,7 +72,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
 
     /**
      * Retrieve existing extension attributes object or create a new one.
-     * @return \Ctech\Configurator\Api\Data\ProductExtensionInterface|null
+     * @return ExtensionAttributesInterface
      */
     public function getExtensionAttributes()
     {
@@ -78,11 +81,11 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
 
     /**
      * Set an extension attributes object.
-     * @param \Ctech\Configurator\Api\Data\ProductExtensionInterface $extensionAttributes
+     * @param ProductExtensionInterface $extensionAttributes
      * @return $this
      */
     public function setExtensionAttributes(
-        \Ctech\Configurator\Api\Data\ProductExtensionInterface $extensionAttributes
+        ProductExtensionInterface $extensionAttributes
     ) {
         return $this->_setExtensionAttributes($extensionAttributes);
     }
@@ -99,7 +102,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set brand_code
      * @param string $brandCode
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setBrandCode($brandCode)
     {
@@ -118,7 +121,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set product_line_code
      * @param string $productLineCode
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setProductLineCode($productLineCode)
     {
@@ -137,7 +140,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set price
      * @param string $price
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setPrice($price)
     {
@@ -156,7 +159,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set images
      * @param string $images
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setImages($images)
     {
@@ -175,7 +178,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set name
      * @param string $name
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setName($name)
     {
@@ -194,7 +197,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set sku
      * @param string $sku
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setSku($sku)
     {
@@ -213,7 +216,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set status
      * @param string $status
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setStatus($status)
     {
@@ -232,7 +235,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set created_at
      * @param string $createdAt
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setCreatedAt($createdAt)
     {
@@ -251,7 +254,7 @@ class Product extends \Magento\Framework\Api\AbstractExtensibleObject implements
     /**
      * Set updated_at
      * @param string $updatedAt
-     * @return \Ctech\Configurator\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     public function setUpdatedAt($updatedAt)
     {

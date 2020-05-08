@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,8 +24,10 @@
 
 namespace Ctech\Configurator\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
 use Ctech\Configurator\Helper\Data;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 
 /**
  * Class CustomPrice
@@ -33,12 +35,12 @@ use Ctech\Configurator\Helper\Data;
  */
 class CustomPrice implements ObserverInterface
 {
-    /** @var $ctechHelper \Ctech\Configurator\Helper\Data  */
+    /** @var $ctechHelper Data */
     protected $ctechHelper;
 
     /**
      * CustomPrice constructor.
-     * @param \Ctech\Configurator\Helper\Data $ctechHelper
+     * @param Data $ctechHelper
      */
     public function __construct(Data $ctechHelper)
     {
@@ -46,24 +48,24 @@ class CustomPrice implements ObserverInterface
     }
 
     /**
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         /** @var  $item */
         $item = $observer->getEvent()->getData('quote_item');
-        /** @var $product \Magento\Catalog\Model\Product $product */
+        /** @var $product Product $product */
         $product = $observer->getEvent()->getData('product');
 
         if ($this->ctechHelper->isCtechProduct($product)) {
             $item = ($item->getParentItem() ? $item->getParentItem() : $item);
             // Load the custom price
-            $finalResult = array();
-            $result = array();
+            $finalResult = [];
+            $result = [];
             // Load the configured product options
             $options = $item->getProduct()->getTypeInstance(true)->getOrderOptions($item->getProduct());
             // Check for options
-            if ($options) {
+            if (!empty($options)) {
                 if (isset($options['options'])) {
                     $result = array_merge($result, $options['options']);
                 }

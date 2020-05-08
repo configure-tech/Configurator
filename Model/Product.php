@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,12 +26,16 @@ namespace Ctech\Configurator\Model;
 
 use Ctech\Configurator\Api\Data\ProductInterface;
 use Ctech\Configurator\Api\Data\ProductInterfaceFactory;
+use Ctech\Configurator\Model\ResourceModel\Product as ProductResource;
+use Ctech\Configurator\Model\ResourceModel\Product\Collection;
 use Magento\Framework\Api\DataObjectHelper;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Registry;
 
-class Product extends \Magento\Framework\Model\AbstractModel implements IdentityInterface
+class Product extends AbstractModel implements IdentityInterface
 {
-
     const CACHE_TAG = 'ctech_configurator_product';
     protected $_eventPrefix = 'ctech_configurator_product';
     protected $_cacheTag = 'ctech_configurator_product';
@@ -39,23 +43,22 @@ class Product extends \Magento\Framework\Model\AbstractModel implements Identity
 
     protected $dataObjectHelper;
 
-
     /**
-     * @param \Magento\Framework\Model\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      * @param ProductInterfaceFactory $productDataFactory
      * @param DataObjectHelper $dataObjectHelper
-     * @param \Ctech\Configurator\Model\ResourceModel\Product $resource
-     * @param \Ctech\Configurator\Model\ResourceModel\Product\Collection $resourceCollection
+     * @param ProductResource $resource
+     * @param Collection $resourceCollection
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        Registry $registry,
         ProductInterfaceFactory $productDataFactory,
         DataObjectHelper $dataObjectHelper,
-        \Ctech\Configurator\Model\ResourceModel\Product $resource,
-        \Ctech\Configurator\Model\ResourceModel\Product\Collection $resourceCollection,
+        ProductResource $resource,
+        Collection $resourceCollection,
         array $data = []
     ) {
         $this->productDataFactory = $productDataFactory;

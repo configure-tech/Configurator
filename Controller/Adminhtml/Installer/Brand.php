@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Copyright (c) 2019 Tawfek Daghistani - ConfigureTech
- * 
+ * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,34 +24,32 @@
 
 namespace Ctech\Configurator\Controller\Adminhtml\Installer;
 
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Backend\Model\Session;
 use Ctech\Configurator\Helper\Data;
-
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\Session;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\View\Result\PageFactory;
 
 class Brand extends \Magento\Backend\App\Action
 {
-
     protected $resultPageFactory;
 
-    /** @var  \Ctech\Configurator\Helper\Data $helper */
+    /** @var  Data $helper */
     protected $helper;
-    /** @var  \Magento\Framework\Message\ManagerInterface $messageManager  */
+    /** @var  ManagerInterface $messageManager  */
     protected $messageManager;
-    /** @var  \Magento\Backend\Model\Session $session  */
+    /** @var  Session $session  */
     protected $session;
 
     /**
      * Constructor
      *
-     * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Ctech\Configurator\Helper\Data $helper
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Backend\Model\Session $session
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param Data $helper
+     * @param ManagerInterface $messageManager
+     * @param Session $session
      */
     public function __construct(
         Context $context,
@@ -76,7 +74,7 @@ class Brand extends \Magento\Backend\App\Action
     {
         $keys = $this->session->getData("ctechInstaller");
         if (empty($keys)) {
-            $this->messageManager->addNotice("Installer session has been expired , please start over");
+            $this->messageManager->addNoticeMessage("Installer session has been expired , please start over");
             return $this->_redirect("ctechinstaller/installer/index");
         }
         $data = $this->getRequest()->getPostValue();
@@ -85,9 +83,9 @@ class Brand extends \Magento\Backend\App\Action
             $installer_config['brands'] = $data['brands'];
             $this->session->setData("ctechInstaller", $installer_config);
             if (count($data['brands']) == 1) {
-                $this->messageManager->addSuccess("Brand has been selected");
+                $this->messageManager->addSuccessMessage("Brand has been selected");
             } else {
-                $this->messageManager->addSuccess("Brands have been selected");
+                $this->messageManager->addSuccessMessage("Brands have been selected");
             }
             return $this->_redirect("ctechinstaller/installer/line");
         }
