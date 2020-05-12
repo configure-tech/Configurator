@@ -1,13 +1,12 @@
+<?php /* @var $block \Ctech\Configurator\Block\Product\View */ ?>
 <div class="product configurator">
-    <?php /* @var $block \Ctech\Configurator\Block\Product\View\Angular */ ?>
     <?php
     $helper = $this->helper('Ctech\Configurator\Helper\Data');
     $product = $block->getProduct();
     if ($helper->isCtechProduct($product)) :
         $brand_code = $product->getData("brand_code");
         $product_line_code = $product->getData("product_line_code");
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $session = $objectManager->get('\Magento\Framework\Session\SessionManagerInterface');
+        $session = $block->getCustomerSession();
         $session_id = $session->getData("visitor_data")["session_id"];
         $storeKey = $helper->getStoreConfig("store_key");
         ?>

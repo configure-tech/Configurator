@@ -491,7 +491,7 @@ class Data extends AbstractHelper
 
             ],
             [
-                'title'         => 'Lloyd Code',
+                'title'         => 'Manufacturer’s Part Number',
                 'type'          => ProductCustomOptionInterface::OPTION_TYPE_FIELD,
                 'is_require'    => 1,
                 'sort_order'    => 2,

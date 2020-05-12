@@ -185,7 +185,6 @@ class Configure extends Action implements CsrfAwareActionInterface
                 }
                 $options[$o->getOptionId()] = str_replace(" ", "_", strtolower($o->getTitle()));
             }
-
             $product_params = [];
             foreach ($formatted_products as $selected_product) {
                 foreach ($options as $option_id => $option_title) {
@@ -193,8 +192,6 @@ class Configure extends Action implements CsrfAwareActionInterface
                         $product_params['options'][$option_id] = preg_replace('#<br\s*/?>#i', "\n", urldecode($selected_product[$option_title]));
                     }
                 }
-
-                $cart->addProduct($product, $product_params);
                 $product_params = [];
             }
 

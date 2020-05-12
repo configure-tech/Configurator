@@ -101,29 +101,29 @@ class Import
                 ->setPageSize(self::PAGE_SIZE);
             if ($products->count() > 0) {
                 $skus = [];
-                $this->logger->info("found " . $products->count() . " product(s) to work on ");
+                $this->logger->info("[ConfigureTech Product Installer] found " . $products->count() . " product(s) to work on ");
                 foreach ($products as $product) {
                     $name = $product->getName();
-                    $this->logger->info("I'll work on " . $product->getName() . ", id : " . $product->getId());
+                    $this->logger->info("[ConfigureTech Product Installer] I'll work on " . $product->getName() . ", id : " . $product->getId());
                     $result = $this->helper->createProducts($product->getData());
                     if ($result['success'] === 'true') {
-                        $this->logger->info("SUCCESS: " . $result['message']);
+                        $this->logger->info("[ConfigureTech Product Installer] SUCCESS: " . $result['message']);
                         $product->setStatus('success');
                         $skus[] = $name;
                     } else {
-                        $this->logger->info("FAILURE: " . $result['message']);
+                        $this->logger->info("[ConfigureTech Product Installer] FAILURE: " . $result['message']);
                         $product->setStatus('failed');
                     }
                     $now = $this->timezone->date( new \DateTime('now'));
                     $product->setUpdatedAt($now->getTimestamp());
                     $product->save();
-                    $this->logger->info("finished working on " . $product->getName());
+                    $this->logger->info("[ConfigureTech Product Installer] finished working on " . $product->getName());
                 }
                 $this->notifierPool->addNotice("[ConfigureTech Product Installer] successfully created " . count($skus) . " Products", implode(" , ", $skus));
             }
         } catch (Throwable $th) {
-            $this->logger->info("failed to execute the cron ,the error was: " . $th->getMessage());
-            $this->logger->info("[hint] in case error was about : `The image content must be valid base64 encoded data` , you may need to check your server connectivity to our S3 Bucket");
+            $this->logger->info("[ConfigureTech Product Installer] failed to execute the cron ,the error was: " . $th->getMessage());
+            $this->logger->info("[ConfigureTech Product Installer] [hint] in case error was about : `The image content must be valid base64 encoded data` , you may need to check your server connectivity to our S3 Bucket");
         }
         $this->logger->info("[ConfigureTech Product Installer] create product cronjob  finished executing.");
     }
