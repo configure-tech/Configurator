@@ -26,6 +26,7 @@
             <values>
                 <value id="ctiapi-images" type="host">ctiapi.com</value>
                 <value id="ctiapi-s3-images" type="host">s3.amazonaws.com</value>
+                <value id="youtube" type="host">youtube.com</value>
             </values>
         </policy>
         <policy id="object-src">
@@ -37,7 +38,7 @@
         <policy id="font-src">
             <values>
                 <value id="ctiapi-font" type="host">ctiapi.com</value>
-                <value id="ctiapi-s3-font" type="host">s3.amazonaws.com</value>
+                <value id="ctiapi-s3-fonts" type="host">s3.amazonaws.com</value>
             </values>
         </policy>
     </policies>

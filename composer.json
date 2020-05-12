@@ -1,7 +1,7 @@
 {
   "name": "ctech/configurator",
   "description": "ConfigureTech Inc Configurator Module",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "type": "magento2-module",
   "license": [
     "MIT"

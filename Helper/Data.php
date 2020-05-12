@@ -26,6 +26,10 @@ namespace Ctech\Configurator\Helper;
 
 use Ctech\Configurator\Model\ProductFactory as ProductCronFactory;
 use GuzzleHttp\Client;
+use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\StateException;
 use function GuzzleHttp\json_decode;
 use GuzzleHttp\RequestOptions;
 use Magento\Backend\Model\Session;
@@ -411,7 +415,7 @@ class Data extends AbstractHelper
         $images = $this->downloadImages(json_decode($data['images']));
         ///  create the hidden product
         $sku  = strtoupper(str_replace(" ", "_", $product_name));
-        $sku_hidden_product  = strtolower($sku . '_display');
+        $sku_hidden_product  = strtolower($sku . '_configured');
         $configuretech_purchase_product = $sku_hidden_product;
         $website_id = [$this->storeManager->getDefaultStoreView()->getWebsiteId()];
         // visible product
@@ -491,7 +495,7 @@ class Data extends AbstractHelper
 
             ],
             [
-                'title'         => 'Manufacturer’s Part Number',
+                'title'         => 'Mfr Part Number',
                 'type'          => ProductCustomOptionInterface::OPTION_TYPE_FIELD,
                 'is_require'    => 1,
                 'sort_order'    => 2,
@@ -531,10 +535,10 @@ class Data extends AbstractHelper
      * @param Array $images
      * @param Bool $hidden_product
      * @param string $configuretech_purchase_product
-     * @return \Magento\Catalog\Api\Data\ProductInterface
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\StateException
+     * @return ProductInterface
+     * @throws CouldNotSaveException
+     * @throws InputException
+     * @throws StateException
      */
     public function createSingleProductAndSave(
         $brandCode,

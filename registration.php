@@ -5,7 +5,7 @@
  *
  * @category    Magento2-module
  * @license MIT
- * @version 0.0.1
+ * @version 3.1.0
  * @author Tawfek Daghistani <tawfekov@gmail.com>
  * @copyright Copyright (c) 2020  ConfigureTech, Inc <http://www.configuretech.com/>
  *
