@@ -17,7 +17,7 @@
                         <![CDATA[]]>
                     </comment>
                 </field>
-                <field id="store_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                <field id="store_domain" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
                     showInStore="1">
                     <label>Store Domain</label>
                     <comment>
