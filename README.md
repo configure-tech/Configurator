@@ -8,6 +8,7 @@ It also comes with a product installer, so you can import your selected products
 
 We support:
 
+- Magento 2.4.4 : please run : `composer require ctech/configurator:3.3.0`
 - Magento 2.4 : please run : `composer require ctech/configurator:3.2.0`
 - Magento 2.3.5-p1 : please run : `composer require ctech/configurator:3.1.0`
 - Magento 2.3 : please run : `composer require ctech/configurator:2.3`
