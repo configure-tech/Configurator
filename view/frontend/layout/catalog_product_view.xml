@@ -6,7 +6,7 @@
             <block class="Magento\Framework\View\Element\Text" name="angular_app">
                 <arguments>
                     <argument name="text" xsi:type="string">
-                        <![CDATA[<script type="text/javascript" src="//ctech-frontend.opgtest.com/static/js/index.bundle.js"></script>]]>
+                        <![CDATA[<script type="text/javascript" src="//ctech-frontend.opgtest.com/js/angular-app/widget/cti-widget.js"></script>]]>
                     </argument>
                 </arguments>
             </block>
