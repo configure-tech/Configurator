@@ -7,7 +7,7 @@
         $brand_code = $product->getData("brand_code");
         $product_line_code = $product->getData("product_line_code");
         $session = $block->getCustomerSession();
-        $session_id = $session->getData("visitor_data")["session_id"];
+        $session_id = $session->getData("visitor_data")["session_id"] ?? 'Guest User';
         $storeKey = $helper->getStoreConfig("store_key");
         ?>
         <?php if ($brand_code && $product_line_code && $storeKey) : ?>
