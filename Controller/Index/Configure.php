@@ -138,7 +138,10 @@ class Configure extends Action implements CsrfAwareActionInterface
         }
         /// we need to validate the code before accepting it , we haven't agreed on a method yet
         // @todo: rewrite to a better validator 
-        if(
+        $cart                     = $this->cart;
+        $request                  = $this->getRequest();
+        $params                   = $request->getParams();
+        if (
             !isset($params["product_id"]) ||
             !isset($params["description"]) ||
             !isset($params["wholesale"]) ||
@@ -146,13 +149,10 @@ class Configure extends Action implements CsrfAwareActionInterface
             !isset($params["part_number"]) ||
             !isset($params["mfr_part_number"]) ||
             !isset($params["weight"])
-        ){
-            $this->logger->error("posted data: ". json_encode($params));
+        ) {
+            $this->logger->error("posted data: " . json_encode($params));
             throw new InputException(new Phrase("Missing Paramters!, check the log to see all posted data"));
         }
-        $cart                     = $this->cart;
-        $request                  = $this->getRequest();
-        $params                   = $request->getParams();
         $products                 = $params["description"];
         $wholesale                = $params["wholesale"];
         $retail                   = $params["retail"];
@@ -160,10 +160,8 @@ class Configure extends Action implements CsrfAwareActionInterface
         $mfr_part_number          = $params["mfr_part_number"];
         $weight                   = $params["weight"];
         $product_id               = $params["product_id"];
-        
         // re-add timestamp for Lloyd Mats Store , its optional
         $timestamp                = isset($params["timestamp"]) ? $params["timestamp"] : "";
-
         $product                  = $this->productRepository->getById($product_id);
         $configuretech_purchase_sku = $product->getData("configuretech_purchase_product");
         if ($configuretech_purchase_sku) {
@@ -228,6 +226,6 @@ class Configure extends Action implements CsrfAwareActionInterface
         $this->messageManager->addSuccessMessage(
             $this->escaper->escapeHtml("the selected product has been added to your cart")
         );
-        return $this->_redirect('checkout/cart');      
+        return $this->_redirect('checkout/cart');
     }
 }
