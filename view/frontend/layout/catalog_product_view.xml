@@ -2,12 +2,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <!--script src="//ctech-frontend.opgtest.com/js/angular-app/widget/cti-widget.js" src_type="url"/-->
-        <script src="//ctiapi.com/js/angular-app/widget/cti-widget.js" src_type="url"/>
         <css src="Ctech_Configurator::css/source/widget.css" />    
     </head>
     <body>
-        <!--<referenceContainer name="before.body.end">
+        <referenceContainer name="before.body.end">
             <block class="Magento\Framework\View\Element\Text" name="angular_app">
                 <arguments>
                     <argument name="text" xsi:type="string">
@@ -15,7 +13,7 @@
                     </argument>
                 </arguments>
             </block>
-        </referenceContainer>-->
+        </referenceContainer>
         <referenceContainer name="content">
             <block class="Ctech\Configurator\Block\Product\View" name="product.view.angular"
                 template="Ctech_Configurator::product/view/widget.phtml" after="product.detail.info">
