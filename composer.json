@@ -1,17 +1,19 @@
 {
   "name": "ctech/configurator",
   "description": "ConfigureTech Inc Configurator Module",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "type": "magento2-module",
   "license": [
     "MIT"
   ],
-  "authors": [{
-    "email": "tawfekov@gmail.com",
-    "name": "Tawfek Daghistani"
-  }],
+  "authors": [
+    {
+      "email": "tawfekov@gmail.com",
+      "name": "Tawfek Daghistani"
+    }
+  ],
   "require": {
-    "php": "~7.4.0||~8.1.0",
+    "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
     "magento/framework": "*"
   },
   "autoload": {
