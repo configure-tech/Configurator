@@ -8,6 +8,8 @@ It also comes with a product installer, so you can import your selected products
 
 We support:
 
+- Magento 2.4.8 : please run : `composer require ctech/configurator:3.5.0`
+- Magento 2.4.7 : please run : `composer require ctech/configurator:3.5.0`
 - Magento 2.4.6 : please run : `composer require ctech/configurator:3.4.0`
 - Magento 2.4.4 : please run : `composer require ctech/configurator:3.3.0`
 - Magento 2.4 : please run : `composer require ctech/configurator:3.2.0`
@@ -18,7 +20,7 @@ We support:
 ## Installation
 
 you need to run the composer require that matches your magento version , for example
-`composer require ctech/configurator:3.4.0`
+`composer require ctech/configurator:3.5.0`
 
 Run upgrade scripts
 `php bin/magento module:enable Ctech_Configurator`

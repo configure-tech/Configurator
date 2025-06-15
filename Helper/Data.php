@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2020 Tawfek Daghistani - ConfigureTech
+ * Copyright (c) 2025 Tawfek Daghistani - ConfigureTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +57,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
+#[\AllowDynamicProperties]
 class Data extends AbstractHelper
 {
     /** @var attribute_set_name string  */

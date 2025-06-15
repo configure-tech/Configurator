@@ -14,8 +14,6 @@ define([
          * @param {String} value
          */
         onUpdate: function (value) {
-            console.log('Selected Value: ' + value);
-
             var field1 = uiRegistry.get('index = field2Depend1');
             if (field1.visibleValue == value) {
                 field1.show();

@@ -7,7 +7,7 @@
  * @license MIT
  * @version 3.1.0
  * @author Tawfek Daghistani <tawfekov@gmail.com>
- * @copyright Copyright (c) 2020  ConfigureTech, Inc <http://www.configuretech.com/>
+ * @copyright Copyright (c) 2025  ConfigureTech, Inc <http://www.configuretech.com/>
  *
  */
 \Magento\Framework\Component\ComponentRegistrar::register(
