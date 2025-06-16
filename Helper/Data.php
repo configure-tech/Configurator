@@ -587,16 +587,39 @@ class Data extends AbstractHelper
         }
         $_product = $this->productRepository->save($_product);
         if ($hidden_product) {
-            $_product->setHasOptions(1);
-            $_product->setCanSaveCustomOptions(true);
-            foreach ($this->getOptionsArray() as $optionValue) {
-                $option = $this->optionFactory->create();
-                $option->setProductId($_product->getId())
-                    ->setStoreId($_product->getStoreId())
-                    ->addData($optionValue);
-                $_product->addOption($option);
+            try {
+                $_product->setHasOptions(1);
+                $_product->setCanSaveCustomOptions(true);
+                
+                $existingOptions = $_product->getOptions() ?: [];
+                $existingOptionTitles = array_map(function($option) {
+                    return $option->getTitle();
+                }, $existingOptions);
+                
+                foreach ($this->getOptionsArray() as $optionValue) {
+                    // Skip if option already exists
+                    if (in_array($optionValue['title'], $existingOptionTitles)) {
+                        continue;
+                    }
+                    
+                    // Validate required fields
+                    if (!isset($optionValue['title']) || !isset($optionValue['type'])) {
+                        $this->logger->warning('Skipping invalid option data: ' . json_encode($optionValue));
+                        continue;
+                    }
+                    
+                    $option = $this->optionFactory->create();
+                    $option->setProductId($_product->getId())
+                        ->setStoreId($_product->getStoreId())
+                        ->addData($optionValue);
+                    $_product->addOption($option);
+                }
+                
+                $_product = $this->productRepository->save($_product);
+            } catch (Throwable $e) {
+                $this->logger->error('Failed to create product options: ' . $e->getMessage());
+                throw $e;
             }
-            $_product = $this->productRepository->save($_product);
         }
         return $_product;
     }
