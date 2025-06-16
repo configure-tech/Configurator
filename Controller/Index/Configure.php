@@ -136,15 +136,15 @@ class Configure extends Action implements CsrfAwareActionInterface
             $cart                     = $this->cart;
             $request                  = $this->getRequest();
             $params                   = $request->getParams();
-            $products                 = $params["description"];
-            $wholesale                = $params["wholesale"];
-            $retail                   = $params["retail"];
-            $part_number              = $params["part_number"];
-            $mfr_part_number          = $params["mfr_part_number"];
-            $weight                   = $params["weight"];
-            $product_id               = $params["product_id"];
+            $products                 = $params["description"] ?? 'N/A';
+            $wholesale                = $params["wholesale"] ?? 'N/A';
+            $retail                   = $params["retail"] ?? 'N/A';
+            $part_number              = $params["part_number"] ?? 'N/A';
+            $mfr_part_number          = $params["mfr_part_number"] ?? 'N/A';
+            $weight                   = $params["weight"] ?? 'N/A';
+            $product_id               = $params["product_id"] ?? 'N/A';
             // re-add timestamp for Lloyd Mats Store , its optional
-            $timestamp                = isset($params["timestamp"]) ? $params["timestamp"] : "";
+            $timestamp                = $params["timestamp"] ?? 'N/A';
 
             $product                  = $this->productRepository->getById($product_id);
             $configuretech_purchase_sku = $product->getData("configuretech_purchase_product");
